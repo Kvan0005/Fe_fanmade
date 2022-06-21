@@ -1,11 +1,11 @@
 # weapons type
-SWORD = "sword"
-LANCE = "lance"
-AXE = "axe"
-BOW = "bow"
-STAFF = "staff"
-ANIMA = "anima"
-DARK = "dark"
+SWORD = "Sword"
+LANCE = "Lance"
+AXE = "Axe"
+BOW = "Bow"
+STAFF = "Staff"
+ANIMA = "Anima"
+DARK = "Dark"
 
 # class character
 INVENTORY_SIZE  = 6 #set the inventory size here

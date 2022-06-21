@@ -1,51 +1,56 @@
 from const import *
+from dataclasses import dataclass, field
 
 
+@dataclass(match_args=True)
 class WeaponSkill:
-    def __init__(self, sword=0, lance=0, axe=0, bow=0, staff=0, anima=0, light=0, dark=0):
-        self.sword = sword
-        self.lance = lance
-        self.axe = axe
-        self.bow = bow
-        self.staff = staff
-        self.anima = anima
-        self.light = light
-        self.dark = dark
+    sword_: int = field(default=0)
+    lance_: int = field(default=0)
+    axe_: int = field(default=0)
+    bow_: int = field(default=0)
+    staff_: int = field(default=0)
+    anima_: int = field(default=0)
+    light_: int = field(default=0)
+    dark_: int = field(default=0)
 
-    def wp_rk_up(self, weapon:str):
+    def wp_rk_up(self, weapon: str):
         match weapon:
-            case "sword":
-                self.sword += 1
-            case "lance":
-                self.lance += 1
-            case "axe":
-                self.axe += 1
-            case "bow":
-                self.bow += 1
-            case "staff":
-                self.staff += 1
-            case "anima":
-                self.anima += 1
-            case "light":
-                self.light += 1
-            case "dark":
-                self.dark += 1
+            case "Sword":
+                self.sword_ += 1
+            case "Lance":
+                self.lance_ += 1
+            case "Axe":
+                self.axe_ += 1
+            case "Bow":
+                self.bow_ += 1
+            case "Staff":
+                self.staff_ += 1
+            case "Anima":
+                self.anima_ += 1
+            case "Light":
+                self.light_ += 1
+            case "Dark":
+                self.dark_ += 1
             case _:
                 raise Exception(f"oe kevin tu sais que l'arme: {weapon} n'exite pas alors fk it !")
 
     def __str__(self):
-        return f"sword:{self.sword}\n" \
-               f"lance:{self.lance}\n" \
-               f"axe:{self.axe}\n" \
-               f"bow:{self.bow}\n" \
-               f"staff:{self.staff}\n" \
-               f"anima:{self.anima}\n" \
-               f"light:{self.light}\n" \
-               f"dark:{self.dark}\n"
-
-
-my_skill = WeaponSkill()
-print(my_skill)
-my_skill.wp_rk_up(SWORD)
-print(my_skill)
-
+        return f"sword:{self.sword_}\n" \
+               f"lance:{self.lance_}\n" \
+               f"axe:{self.axe_}\n" \
+               f"bow:{self.bow_}\n" \
+               f"staff:{self.staff_}\n" \
+               f"anima:{self.anima_}\n" \
+               f"light:{self.light_}\n" \
+               f"dark:{self.dark_}\n"
+def temp_main():
+    ar = "sword"
+    my_skill = WeaponSkill()
+    print(my_skill)
+    my_skill.wp_rk_up(SWORD)
+    print(my_skill)
+"""
+utiliser cette idée
+b = {'x':42, 'y':None}
+function(1, **b) # equal to function(1, x=42, y=None)
+"""
