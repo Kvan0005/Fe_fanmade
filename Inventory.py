@@ -1,9 +1,9 @@
-from Fe_fanmade.const import *
-from Fe_fanmade.Weapon import Weapon
+from const import *
+from Weapon import Weapon
 
 class Inventory:
     def __init__(self, *args):
-        assert (len(args)<=INVENTORY_SIZE)
+        assert (len(args) <= INVENTORY_SIZE)
         self.buffer_ = [None]*INVENTORY_SIZE
         for slot,item in enumerate(args):
             self.buffer_[slot] = item

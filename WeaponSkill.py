@@ -1,4 +1,4 @@
-from Fe_fanmade.const import *
+from const import *
 
 
 class WeaponSkill:

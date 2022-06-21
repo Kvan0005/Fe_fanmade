@@ -41,4 +41,5 @@ class Character:
     def wp_vs_class_coef(main_wp:Weapon, other) -> int:
         pass
 
-
+    def main_wps(self):
+        return self.inv_.pick_first_valid_wps(self.stat_.)

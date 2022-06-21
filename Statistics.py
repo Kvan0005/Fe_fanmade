@@ -1,8 +1,8 @@
-from dataclasses import dataclass
 
-@dataclasses
 class Statistics:
-        lv :int
+
+    def __init__(self, lv, hp, att, ski, spd, lck, deff , res , con , mov):
+        self.lv = lv
         self.hp = hp
         self.att_ = att
         self.ski_ = ski
