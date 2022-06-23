@@ -1,0 +1,30 @@
+todo:
+phase 1: interaction entre unité
+- creation d'un unité (Character) :
+    - creation des stat (sur base du csv)
+        - faire conversion csv -> etat réel des chose
+
+- interaction entre unité et ses attribut:
+    - chercher son main weapons et sub-wps
+    - faire le triangle des arme
+    -
+
+- interaction entre unité:
+    - attacker/deffendre une autre unité
+    - cas de mort
+    - faire interaction arme et class unit
+
+
+actual state:
+
+Character:
+    - 4 attribute (stat, inv, status_eff , WpSkill)
+        -stat -> tous stat de l'unité
+        -inv -> inventory contenant les different item  (pas fait)
+        -status_eff -> l'etat du personnage (buff , ... )
+        -wpSkill -> niveau de maitrise d'un certaine arme
+
+    - methode
+        - attack/deffence -> to finish
+        - lv_up -> todo + todo_in_stat
+
