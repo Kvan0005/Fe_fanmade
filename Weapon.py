@@ -1,9 +1,11 @@
 from dataclasses import dataclass, field
 from const import *
+import abc
+from Item import Item
 
 
 @dataclass
-class Weapon:
+class Weapon(metaclass=abc.ABCMeta):
     name_: str
     rank_: int  # dont know for now
     rng_: list or int
@@ -16,90 +18,58 @@ class Weapon:
     wex_: int = field(repr=False)
     effect_: str
 
+    @abc.abstractmethod
+    def _weapon_triangle(self, other):
+        pass
+
+    def weapon_triangle(self,other):
+        assert not isinstance(other, Item)
+        return self._weapon_triangle(other)
+
+    def property(self):
+        pass
 
 @dataclass
 class Sword(Weapon):
-    Wps_type:str = SWORD
 
-    def __gt__(self, other):
-        match other.Wps_type:
-            case "Axe":
-                res = 1
-            case "Lance":
-                res = -1
-            case _:
-                res = 0
-        if self.name_ in REAVER_SERIES or other.name_ in REAVER_SERIES:
-            res *= -1
-        return res
-
-    def __lt__(self, other):
-        match other.Wps_type:
-            case "Axe":
-                res = -1
-            case "Lance":
-                res = 1
-            case _:
-                res = 0
-        if self.name_ in REAVER_SERIES or other.name_ in REAVER_SERIES:
+    def _weapon_triangle(self, other):
+        if isinstance(other, Axe):
+            res = 1
+        elif isinstance(other, Lance):
+            res = -1
+        else:
+            res = 0
+        if self.name_ in WeaponsSeries.REAVER_SERIES.value or other.name_ in WeaponsSeries.REAVER_SERIES.value :
             res *= -1
         return res
 
 
 @dataclass
 class Axe(Weapon):
-    Wps_type: str = AXE
 
-    def __gt__(self, other):
-        match other.Wps_type:
-            case "Lance":
-                res = 1
-            case "Sword":
-                res = -1
-            case _:
-                res = 0
-        if self.name_ in REAVER_SERIES or other.name_ in REAVER_SERIES:
-            res *= -1
-        return res
-
-    def __lt__(self, other):
-        match other.Wps_type:
-            case "Lance":
-                res = -1
-            case "Sword":
-                res = 1
-            case _:
-                res = 0
-        if self.name_ in REAVER_SERIES or other.name_ in REAVER_SERIES:
+    def _weapon_triangle(self, other):
+        if isinstance(other, Lance):
+            res = 1
+        elif isinstance(other, Sword):
+            res = -1
+        else:
+            res = 0
+        if self.name_ in WeaponsSeries.REAVER_SERIES.value or other.name_ in WeaponsSeries.REAVER_SERIES.value:
             res *= -1
         return res
 
 
 @dataclass
 class Lance(Weapon):
-    Wps_type: str = LANCE
 
-    def __gt__(self, other):
-        match other.Wps_type:
-            case "Sword":
-                res = 1
-            case "Axe":
-                res = -1
-            case _:
-                res = 0
-        if self.name_ in REAVER_SERIES or other.name_ in REAVER_SERIES:
-            res *= -1
-        return res
-
-    def __lt__(self, other):
-        match other.Wps_type:
-            case "Sword":
-                res = -1
-            case "Axe":
-                res = 1
-            case _:
-                res = 0
-        if self.name_ in REAVER_SERIES or other.name_ in REAVER_SERIES:
+    def _weapon_triangle(self, other):
+        if isinstance(other, Sword):
+            res = 1
+        elif isinstance(other, Axe):
+            res = -1
+        else:
+            res = 0
+        if self.name_ in WeaponsSeries.REAVER_SERIES.value or other.name_ in WeaponsSeries.REAVER_SERIES.value:
             res *= -1
         return res
 
@@ -107,6 +77,4 @@ class Lance(Weapon):
 a = Sword("SlimSword", 1, 1, 2, 3, 100, 5, 30, 480, 1, "-")
 b = Lance("SlimSword", 1, 1, 2, 3, 100, 5, 30, 480, 1, "-")
 c = Axe("SlimSword", 1, 1, 2, 3, 100, 5, 30, 480, 1, "-")
-print(a>b, a<b)
-print(b>c, b<c)
-print(c>a, c<a)
+print(a)

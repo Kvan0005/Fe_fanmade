@@ -4,7 +4,7 @@ from pprint import pprint
 from Weapon import Weapon
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, match_args=True)
 class Statistics:  # j'ai mis un _ a la fin pour les attributes que considère privé et juste 'hp' qui pourra etre changer a exterior
     lv_: int
     m_hp_: int
