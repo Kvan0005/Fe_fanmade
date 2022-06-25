@@ -13,23 +13,23 @@ class WeaponSkill:
     light_: int = field(default=0)
     dark_: int = field(default=0)
 
-    def wp_rk_up(self, weapon: str):
+    def wp_rk_up(self, weapon: WeaponsType):
         match weapon:
-            case WeaponsType.SWORD.value:
+            case WeaponsType.SWORD:
                 self.sword_ += 1
-            case WeaponsType.LANCE.value:
+            case WeaponsType.LANCE:
                 self.lance_ += 1
-            case WeaponsType.AXE.value:
+            case WeaponsType.AXE:
                 self.axe_ += 1
-            case WeaponsType.BOW.value:
+            case WeaponsType.BOW:
                 self.bow_ += 1
-            case WeaponsType.STAFF.value:
+            case WeaponsType.STAFF:
                 self.staff_ += 1
-            case WeaponsType.ANIMA.value:
+            case WeaponsType.ANIMA:
                 self.anima_ += 1
-            case WeaponsType.LIGHT.value:
+            case WeaponsType.LIGHT:
                 self.light_ += 1
-            case WeaponsType.DARK.value:
+            case WeaponsType.DARK:
                 self.dark_ += 1
             case _:
                 raise Exception(f"oe kevin tu sais que l'arme: {weapon} n'exite pas alors fk it !")
@@ -47,7 +47,7 @@ def temp_main():
     ar = "sword"
     my_skill = WeaponSkill()
     print(my_skill)
-    my_skill.wp_rk_up(WeaponsType.SWORD.value)
+    my_skill.wp_rk_up(WeaponsType.SWORD)
     print(my_skill)
 
 

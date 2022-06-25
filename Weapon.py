@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from WeaponAttrsEffect import WeaponAttrsEffect
 from const import *
 import abc
 from Item import Item
@@ -7,7 +8,8 @@ from Item import Item
 @dataclass
 class Weapon(metaclass=abc.ABCMeta):
     name_: str
-    rank_: int  # dont know for now
+    pre_rank_: str = field(repr = False)
+    rank_: int = field(init=False)
     rng_: list or int
     wt_: int
     mt_: int
@@ -16,18 +18,32 @@ class Weapon(metaclass=abc.ABCMeta):
     uses: int
     worth_: int = field(repr=False)
     wex_: int = field(repr=False)
-    effect_: str
+    pre_effect_: str
+    effect_: WeaponAttrsEffect = field(init=False, repr=False)
+
+    def __post_init__(self):
+        match self.pre_rank_:
+            case "E" | "D" | "C" | "B" | "A":
+                self.rank_ = abs(ord(self.pre_rank_) - ord("F"))
+            case "Prf":
+                self.rank_ = 0
+            case "S":
+                self.rank_ = 6
+            case _:
+                raise Exception(f'Weapons rank not in the standard ! : {self.pre_rank_}')
+
 
     @abc.abstractmethod
     def _weapon_triangle(self, other):
         pass
 
-    def weapon_triangle(self,other):
+    def weapon_triangle(self, other):
         assert not isinstance(other, Item)
         return self._weapon_triangle(other)
 
     def property(self):
         pass
+
 
 @dataclass
 class Sword(Weapon):
@@ -39,7 +55,7 @@ class Sword(Weapon):
             res = -1
         else:
             res = 0
-        if self.name_ in WeaponsSeries.REAVER_SERIES.value or other.name_ in WeaponsSeries.REAVER_SERIES.value :
+        if self.name_ in WeaponsSeries.REAVER_SERIES.value or other.name_ in WeaponsSeries.REAVER_SERIES.value:
             res *= -1
         return res
 
@@ -74,7 +90,7 @@ class Lance(Weapon):
         return res
 
 
-a = Sword("SlimSword", 1, 1, 2, 3, 100, 5, 30, 480, 1, "-")
-b = Lance("SlimSword", 1, 1, 2, 3, 100, 5, 30, 480, 1, "-")
-c = Axe("SlimSword", 1, 1, 2, 3, 100, 5, 30, 480, 1, "-")
+a = Sword("SlimSword", "E", 1, 2, 3, 100, 5, 30, 480, 1, "-")
+b = Lance("SlimSword", "D", 1, 2, 3, 100, 5, 30, 480, 1, "-")
+c = Axe("SlimSword", "Prf", 1, 2, 3, 100, 5, 30, 480, 1, "-")
 print(a)

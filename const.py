@@ -34,8 +34,30 @@ class Group(NoValue):
     NOMAD_TROOPERS = "Nomad Troopers"
     FIGHTERS = "Fighters"
     BANDITS = "Bandits"
-    MAGES = "Magess"
+    MAGES = "Mages"
     FLIERS = "Fliers"
+
+
+# type of status effect
+class StatusEffect(NoValue):
+    POISONED = "poisoned"
+    SLEEPING = "Sleeping"
+    BERSERK = "Berserk"
+    SILENCE = "Silences"
+
+
+class HealerEffect(NoValue):
+    pass
+
+
+class MovementModification(NoValue):
+    TELEPORT = "Teleports"
+    RESCUE = "Rescue"
+
+
+class MapInteraction(NoValue):
+    TORCH = "Light up"
+    OPEN = "Open door"
 
 
 # basic thing

@@ -237,4 +237,5 @@ class Civilian(Character):
 
 
 if __name__ == '__main__':
-    a = Character("jorissen", 1, 16, 4, 7, 9, 5, 2, 0, 5, 5)
+    a = Civilian("jorissen", 1, 16, 4, 7, 9, 5, 2, 0, 5, 5)
+    print(isinstance(a, Character))
