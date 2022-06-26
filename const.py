@@ -24,7 +24,7 @@ class WeaponsSeries(NoValue):
     RUNE_SERIE = ["Runesword", "Light Brand (indirect)"]
 
 
-# caracter job specificity
+# caracter mouvement class specificity
 class Group(NoValue):
     FOOT = "Foot"
     ARMOURS = "Armours"
@@ -38,26 +38,42 @@ class Group(NoValue):
     FLIERS = "Fliers"
 
 
+# character specificity
+class ClassSpecificity:
+    HORSEBACK = "Horseback"
+    ARMOURED = "Armoured"
+    FLYING = "Flying"
+    DRAGON = "Dragon"
+
+    MOUNTAIN = "Can cross mountains"
+    SEA = "Can cross seas"
+    BALLISTIC = "Can use ballistae"  # for archer/sniper class
+
+
 # type of status effect
 class StatusEffect(NoValue):
     POISONED = "poisoned"
     SLEEPING = "Sleeping"
     BERSERK = "Berserk"
     SILENCE = "Silences"
+    NOEFFECT = "Nothing"
 
 
 class HealerEffect(NoValue):
+    NOEFFECT = "Nothing"
     pass
 
 
 class MovementModification(NoValue):
     TELEPORT = "Teleports"
     RESCUE = "Rescue"
+    NOEFFECT = "Nothing"
 
 
 class MapInteraction(NoValue):
     TORCH = "Light up"
     OPEN = "Open door"
+    NOEFFECT = "Nothing"
 
 
 # basic thing

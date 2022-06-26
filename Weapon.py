@@ -8,7 +8,7 @@ from Item import Item
 @dataclass
 class Weapon(metaclass=abc.ABCMeta):
     name_: str
-    pre_rank_: str = field(repr = False)
+    pre_rank_: str = field(repr=False)
     rank_: int = field(init=False)
     rng_: list or int
     wt_: int
@@ -31,6 +31,11 @@ class Weapon(metaclass=abc.ABCMeta):
                 self.rank_ = 6
             case _:
                 raise Exception(f'Weapons rank not in the standard ! : {self.pre_rank_}')
+        all_effect = {}
+        for phrase in self.pre_effect_.split(","):
+            pass
+            if "Effective against" in phrase:
+                pass
 
 
     @abc.abstractmethod
