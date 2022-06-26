@@ -33,10 +33,17 @@ class Weapon(metaclass=abc.ABCMeta):
                 raise Exception(f'Weapons rank not in the standard ! : {self.pre_rank_}')
         all_effect = {}
         for phrase in self.pre_effect_.split(","):
-            pass
             if "Effective against" in phrase:
-                pass
+                weakened_group_str = phrase.split()[2].split("/")  # just extract the class name from the
+                all_effect["groups_effectiveness"] = []
+                for group in ClassSpecificity:
+                    if group.value in weakened_group_str:
+                        all_effect["groups_effectiveness"].append(group)  # help that horrible
 
+            if "Poisons on contact" in phrase:
+                all_effect["inflict_status_effect"] = StatusEffect.POISONED
+
+            if
 
     @abc.abstractmethod
     def _weapon_triangle(self, other):
@@ -98,4 +105,6 @@ class Lance(Weapon):
 a = Sword("SlimSword", "E", 1, 2, 3, 100, 5, 30, 480, 1, "-")
 b = Lance("SlimSword", "D", 1, 2, 3, 100, 5, 30, 480, 1, "-")
 c = Axe("SlimSword", "Prf", 1, 2, 3, 100, 5, 30, 480, 1, "-")
-print(a)
+d = " effective against armoured/mounted units"
+e = d.split()[2].split("/")
+print(e)

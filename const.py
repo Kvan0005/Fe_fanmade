@@ -39,12 +39,11 @@ class Group(NoValue):
 
 
 # character specificity
-class ClassSpecificity:
-    HORSEBACK = "Horseback"
-    ARMOURED = "Armoured"
-    FLYING = "Flying"
-    DRAGON = "Dragon"
-
+class ClassSpecificity(NoValue):
+    HORSEBACK = "horseback"
+    ARMOURED = "armoured"
+    FLYING = "flying"
+    DRAGON = "dragon"
     MOUNTAIN = "Can cross mountains"
     SEA = "Can cross seas"
     BALLISTIC = "Can use ballistae"  # for archer/sniper class
@@ -53,9 +52,9 @@ class ClassSpecificity:
 # type of status effect
 class StatusEffect(NoValue):
     POISONED = "poisoned"
-    SLEEPING = "Sleeping"
-    BERSERK = "Berserk"
-    SILENCE = "Silences"
+    SLEEPING = "sleeping"
+    BERSERK = "berserk"
+    SILENCE = "silences"
     NOEFFECT = "Nothing"
 
 
@@ -65,14 +64,14 @@ class HealerEffect(NoValue):
 
 
 class MovementModification(NoValue):
-    TELEPORT = "Teleports"
-    RESCUE = "Rescue"
+    TELEPORT = "teleports"
+    RESCUE = "rescue"
     NOEFFECT = "Nothing"
 
 
 class MapInteraction(NoValue):
-    TORCH = "Light up"
-    OPEN = "Open door"
+    TORCH = "light up"
+    OPEN = "open door"
     NOEFFECT = "Nothing"
 
 
