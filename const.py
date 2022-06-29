@@ -44,6 +44,7 @@ class ClassSpecificity(NoValue):
     ARMOURED = "armoured"
     FLYING = "flying"
     DRAGON = "dragon"
+    MOUNTED = "mounted"
     MOUNTAIN = "Can cross mountains"
     SEA = "Can cross seas"
     BALLISTIC = "Can use ballistae"  # for archer/sniper class
@@ -55,6 +56,7 @@ class StatusEffect(NoValue):
     SLEEPING = "sleeping"
     BERSERK = "berserk"
     SILENCE = "silences"
+    SELFDEMAGE = "may damage user"
     NOEFFECT = "Nothing"
 
 
@@ -75,5 +77,8 @@ class MapInteraction(NoValue):
     NOEFFECT = "Nothing"
 
 
+class AttackBonus(NoValue):
+    DOUBLEATT = 'Allows 2 consecutive hits'
+    NOCOUNTER = 'Cannot be countered'
 # basic thing
 INVENTORY_SIZE = 6  # set the inventory size here

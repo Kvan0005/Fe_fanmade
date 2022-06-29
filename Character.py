@@ -1,4 +1,4 @@
-from Weapon import Weapon
+#from Weapon import Weapon
 from Statistics import Statistics
 from Inventory import Inventory
 from WeaponSkill import WeaponSkill

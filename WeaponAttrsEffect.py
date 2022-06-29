@@ -1,4 +1,3 @@
-
 from dataclasses import dataclass, field
 from const import *
 
@@ -11,4 +10,6 @@ class WeaponAttrsEffect:
     movement_modification: MovementModification or None
     map_interaction: MapInteraction or None
     groups_effectiveness: Group or ClassSpecificity or list[Group] or list[ClassSpecificity] or None
-    user_condition: "Character" or None
+    user_condition: list[str] or None
+    stat_bonus: list[tuple[str, int]]
+    attack_bonus: AttackBonus
