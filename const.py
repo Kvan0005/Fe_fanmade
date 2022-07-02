@@ -1,4 +1,5 @@
 import enum
+import random
 
 
 class NoValue(enum.Enum):
@@ -21,7 +22,7 @@ class WeaponsType(NoValue):
 # special weapons
 class WeaponsSeries(NoValue):
     REAVER_SERIES = ["Lancereaver", "Swordreaver", "Axereaver"]
-    RUNE_SERIE = ["Runesword", "Light Brand (indirect)"]
+    RUNE_SERIES = ["Runesword", "Light Brand", "Wind Sword"]
 
 
 # caracter mouvement class specificity
@@ -80,5 +81,16 @@ class MapInteraction(NoValue):
 class AttackBonus(NoValue):
     DOUBLEATT = 'Allows 2 consecutive hits'
     NOCOUNTER = 'Cannot be countered'
+
+
 # basic thing
+
+class Terrain(NoValue):
+    pass
+
+
 INVENTORY_SIZE = 6  # set the inventory size here
+
+
+def PERCENT():
+    return random.randint(0, 100)

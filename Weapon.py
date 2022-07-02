@@ -4,6 +4,7 @@ from const import *
 import abc
 from Item import Item
 import re
+
 @dataclass
 class Weapon(metaclass=abc.ABCMeta):
     name_: str
@@ -31,6 +32,7 @@ class Weapon(metaclass=abc.ABCMeta):
             case _:
                 raise Exception(f'Weapons rank not in the standard ! : {self.pre_rank_}')
 
+        # need to rework but let not do it now
         all_effect = {}
 
         temps = re.match(r".ffective against (\.+) units",self.pre_effect_)
@@ -40,8 +42,10 @@ class Weapon(metaclass=abc.ABCMeta):
                 if group.value in temps.group(1):
                     all_effect["groups_effectiveness"].append(group)
 
-        if re.match(r".oisons on contact", self.pre_effect_):
-            all_effect["inflict_status_effect"] = StatusEffect.POISONED
+        for statusEffect in StatusEffect:
+            if re.match(statusEffect.value, self.pre_effect_.lower()):
+                all_effect["inflict_status_effect"] = statusEffect
+                break
 
         temps = re.match(r"(.+) only", self.pre_effect_)
         if temps:
@@ -51,6 +55,9 @@ class Weapon(metaclass=abc.ABCMeta):
         if re.match(r".ood against \w+, bad against \w+",self.pre_effect_):
             all_effect["weapon_series"] = WeaponsSeries.REAVER_SERIES
 
+        if self.name_ in WeaponsSeries.RUNE_SERIES.value:
+            all_effect["weapon_series"] = WeaponsSeries.RUNE_SERIES
+
         temps = re.findall(r"(\w+) [+](\d*)", self.pre_effect_)
         if temps:
             all_effect["stat_bonus"] = temps
@@ -58,9 +65,11 @@ class Weapon(metaclass=abc.ABCMeta):
         if self.pre_effect_ in (AttackBonus.DOUBLEATT.value, AttackBonus.NOCOUNTER.value) :
             all_effect["attack_bonus"] = AttackBonus(self.pre_effect_)
 
+        self.effect_ = WeaponAttrsEffect(**all_effect)
+
     @abc.abstractmethod
     def _weapon_triangle(self, other):
-        pass
+        return 0
 
     def weapon_triangle(self, other):
         assert not isinstance(other, Item)
@@ -114,6 +123,10 @@ class Lance(Weapon):
             res *= -1
         return res
 
+
+@dataclass
+class Staff(Weapon):
+  pass
 
 a = Sword("SlimSword", "E", 1, 2, 3, 100, 5, 30, 480, 1, "-")
 b = Lance("SlimSword", "D", 1, 2, 3, 100, 5, 30, 480, 1, "-")
