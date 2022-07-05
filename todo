@@ -27,4 +27,12 @@ Character:
     - methode
         - attack/deffence -> to finish
         - lv_up -> todo + todo_in_stat
+        - range check
+Map :
+    - ? attribute
+
+    -methode
+        - the map management
+        - how to do a path finder
+
 

@@ -20,27 +20,56 @@ class Character(metaclass=abc.ABCMeta):
         self.terrain = None
 
     # ----------------------------------attack/defense section----------------------------------------------------------
-    def fight(self, other:"Character"):
-        speed_advantage = self.speed_advantage(other)
-        self.launch_attack(other)
-        if other.stat_.hp > 0 and other.in_range(self):
-            pass
 
+    def alive(self) -> bool:
+        """ check is a unit is alive """
+        return self.stat_.alive()
 
-    def launch_attack(self, other: "Character"):
+    def fight(self, other: "Character") -> None:
+        """
+        this is when 2 unit actually deal damage to each other by attacking the heal_bar stat (stat_.hp) and all
+        outer thing that could during the exchange
+        """
+
+        def attacking(unit1: "Character", unit2: "Character") -> None:
+            unit2.take_damage(unit1.launch_attack(unit2))
+
+        attacking(self, other)  # first attack
+
+        if other.alive() and other.repostable(self):  # repost (if possible)
+            attacking(other, self)
+
+        if self.alive() and other.alive():  # 2nd attack if one can do it (bug: cannot report can do a repost here)
+            attacker, defender = self.speed_advantage(other)
+            if attacker is not None and attacker.repostable(defender):
+                attacking(attacker, defender)
+
+        if isinstance(self.main_wps, Weapon) and self.is_selfdamaging(self.main_wps):  # backslash of "devil axe"
+            if PERCENT(31 - self.stat_.lck_):
+                self_damage = self.attack(self) - self.defence()
+                self.take_damage(self_damage)
+
+    def launch_attack(self, other: "Character") -> int or None:
+        """
+        this function utilise all needed parameter for a attack included all probability of succeeding or fail
+        :return None if a attack has miss the target or a integer if that attack has hit/crit/one hit ko his opponent
+        """
         tot_dmg = self.attack(other) - other.defence()
-        if self.battle_accuracy(other) > PERCENT():
-            if self.battle_critical_rate(other) > PERCENT():
+        if PERCENT(self.battle_accuracy(other)):
+            if PERCENT(self.battle_critical_rate(other)):
                 if isinstance(self, Assassin):
-                    if 50 > PERCENT():
-                        other.stat_.hp -= other.stat_.hp  # one hit ko
+                    if PERCENT(50):
+                        return other.stat_.hp  # one hit ko
                 tot_dmg *= 3
-            other.stat_.hp -= tot_dmg
+            return tot_dmg
+        return None
 
-
-    def attack(self, other) -> int:
+    def attack(self, other: "Character") -> int:
+        """
+        give the amount of damage if a unit_1 hit a unit_2
+        """
         dmg = self.stat_.att_
-        if self.is_runesword(self.main_wps):  # pas fait les porp des arme
+        if self.is_runesword(self.main_wps):
             dmg //= 2
         dmg += self.wp_dmg_calculation(self.main_wps, other.main_wps) * self.wp_vs_class_coef(self.main_wps, other)
         # dmg += self.support_dmg_bonus
@@ -48,34 +77,56 @@ class Character(metaclass=abc.ABCMeta):
 
     @staticmethod
     def wp_dmg_calculation(wp_1: Weapon, wp_2: Weapon) -> int:
+        """
+        damage that a weapon can deal and also including if a weapon is advantageous against a another one
+        """
         wp_dmg = wp_1.mt_
         wp_dmg += wp_1.weapon_triangle(wp_2)
         return wp_dmg
 
     @classmethod
     def wp_vs_class_coef(cls, wp: Weapon, unit: "Character") -> int:
-        return 2 if wp.effect_.groups_effectiveness == unit.group or f"{cls}" == wp.effect_.groups_effectiveness else 1
+        """
+        a coefficient that tell if a weapon has a increase efficiency against a Character specificity
+        """
+        return 2 if unit.group in wp.effect_.groups_effectiveness or f"{cls}" in wp.effect_.groups_effectiveness else 1
 
-    def is_runesword(self, wps):
-        return wps.effect_.weapon_series == WeaponsSeries.RUNE_SERIE
+    def is_runesword(self, wps: Weapon) -> bool:
+        """ if weapons in RUNE_SERIES"""
+        return WeaponsSeries.RUNE_SERIE in wps.effect_.weapon_series
+
+    def is_selfdamaging(self, wps: Weapon) -> bool:
+        """ if weapons has SELFDEMAGE"""
+        return StatusEffect.SELFDEMAGE in wps.effect_.inflict_status_effect
 
     @property
     def main_wps(self) -> Weapon:
+        """
+        extract the main weapons of a unit
+        """
         return self.inv_.main_wps
 
     def lv_up(self):
         pass
 
     def defence(self) -> int:
+        """
+        give the amount of damage that a unit can absorb
+        """
         deff = self.stat_.def_
         # connect to terrain stat >?
-        pass
+        return deff
 
     def battle_accuracy(self, other: "Character") -> int:
+        """ the in-fight accuracy of a certain unit [0-100] """
         assert (self.main_wps, Weapon)
-        return self.accuracy(other) - other.avoid()
+        precision = self.accuracy(other) - other.avoid()
+        if not (0 <= precision <= 100):
+            precision = 0 if precision <= 0 else 100
+        return precision
 
     def accuracy(self, other: "Character") -> int:
+        """ the value of a unit precision (no size limit) """
         if isinstance(self.main_wps, Staff):
             return 30 + (self.stat_.att_ * 5) + self.stat_.ski_
         triangle_bonus = 15  # can be modulate
@@ -90,6 +141,7 @@ class Character(metaclass=abc.ABCMeta):
         return hit
 
     def avoid(self) -> int:
+        """ this can be assimilate to a dodge rate (no size limit)"""
         if isinstance(self.main_wps, Staff):
             return (self.stat_.res_ * 5) + 1  # enemy distance * 2 todo
         avoid = self.stat_.spd_ * 2
@@ -100,12 +152,14 @@ class Character(metaclass=abc.ABCMeta):
         return avoid
 
     def battle_critical_rate(self, other: "Character") -> int:
+        """ the probability of a crit in-battle """
         assert (self.main_wps, Weapon)
-        if self.main_wps.effect_.weapon_series == WeaponsSeries.RUNE_SERIES:
+        if self.is_runesword(self.main_wps):
             return 0
         return self.critical_rate() - other.critical_evade()
 
     def critical_rate(self) -> int:
+        """ the crit rate """
         critical_rate = self.main_wps.crt_
         critical_rate += self.stat_.ski_ * 2
         # crit_rate += support_bonus
@@ -116,28 +170,40 @@ class Character(metaclass=abc.ABCMeta):
         return critical_rate
 
     def critical_evade(self) -> int:
+        """ the rate of dodging a crit """
         critical_evade = self.stat_.lck_
         # critical_evade += support_bonus
         # critical_evade += tactician bonus
         return critical_evade
 
-    def speed_advantage(self, other:"Character"):
+    def speed_advantage(self, other: "Character") -> list["Character"] or None:
+        """
+        calculation of the possibility of a speed advantage (aka double attack) on the opponent if None,None the no
+        advantage for either of them
+        first element of the tuple is attacker second one is the defender
+        """
         att_spd1 = self.stat_.att_spd(self.main_wps)
         att_spd2 = other.stat_.att_spd(other.main_wps)
         if att_spd1 - att_spd2 >= 4:
-            res = 1
+            return self, other
         elif att_spd2 - att_spd1 >= 4:
-            res = -1
-        else:
-            res = 0
-        return res
+            return other, self
+        return None, None
 
-    def in_range(self, other:"Character"):
+    def repostable(self, other: "Character"):
+        """
+        check if a unit has what is needed to do a repost
+        """
         pass
 
+    def take_damage(self, damage: int) -> None:
+        """ reduce a unit health_bar(stat_.hp) by a amount"""
+        self.stat_.take_damage(damage)
+
+
 class LordLyn(Character):
-    def __init__(self, *args):
-        super(LordLyn, self).__init__(*args)
+    def __init__(self, *args, **kwargs):
+        super(LordLyn, self).__init__(*args, **kwargs)
         self.group = Group.FOOT
         self.wps_type.append(WeaponsType.SWORD)
 

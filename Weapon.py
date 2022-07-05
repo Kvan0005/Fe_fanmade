@@ -5,6 +5,7 @@ import abc
 from Item import Item
 import re
 
+
 @dataclass
 class Weapon(metaclass=abc.ABCMeta):
     name_: str
@@ -35,7 +36,7 @@ class Weapon(metaclass=abc.ABCMeta):
         # need to rework but let not do it now
         all_effect = {}
 
-        temps = re.match(r".ffective against (\.+) units",self.pre_effect_)
+        temps = re.match(r".ffective against (\.+) units", self.pre_effect_)
         if temps:
             all_effect["groups_effectiveness"] = []
             for group in ClassSpecificity:
@@ -52,7 +53,7 @@ class Weapon(metaclass=abc.ABCMeta):
             temps = temps.group(1).split("/")
             all_effect["user_condition"] = temps
 
-        if re.match(r".ood against \w+, bad against \w+",self.pre_effect_):
+        if re.match(r".ood against \w+, bad against \w+", self.pre_effect_):
             all_effect["weapon_series"] = WeaponsSeries.REAVER_SERIES
 
         if self.name_ in WeaponsSeries.RUNE_SERIES.value:
@@ -62,16 +63,16 @@ class Weapon(metaclass=abc.ABCMeta):
         if temps:
             all_effect["stat_bonus"] = temps
 
-        if self.pre_effect_ in (AttackBonus.DOUBLEATT.value, AttackBonus.NOCOUNTER.value) :
+        if self.pre_effect_ in (AttackBonus.DOUBLEATT.value, AttackBonus.NOCOUNTER.value):
             all_effect["attack_bonus"] = AttackBonus(self.pre_effect_)
 
         self.effect_ = WeaponAttrsEffect(**all_effect)
 
     @abc.abstractmethod
-    def _weapon_triangle(self, other):
+    def _weapon_triangle(self, other: "Weapon") -> int:
         return 0
 
-    def weapon_triangle(self, other):
+    def weapon_triangle(self, other: "Weapon") -> int:
         assert not isinstance(other, Item)
         return self._weapon_triangle(other)
 
@@ -126,20 +127,20 @@ class Lance(Weapon):
 
 @dataclass
 class Staff(Weapon):
-  pass
+    pass
 
-a = Sword("SlimSword", "E", 1, 2, 3, 100, 5, 30, 480, 1, "-")
-b = Lance("SlimSword", "D", 1, 2, 3, 100, 5, 30, 480, 1, "-")
-c = Axe("SlimSword", "Prf", 1, 2, 3, 100, 5, 30, 480, 1, "-")
-d = "Res +14"
-    #for i in range(len(temps.group()) // 3):
+
+if __name__ == "__main__":
+    a = Sword("SlimSword", "E", 1, 2, 3, 100, 5, 30, 480, 1, "-")
+    b = Lance("SlimSword", "D", 1, 2, 3, 100, 5, 30, 480, 1, "-")
+    c = Axe("SlimSword", "Prf", 1, 2, 3, 100, 5, 30, 480, 1, "-")
+    d = "Res +14"
+    # for i in range(len(temps.group()) // 3):
     #    v.append((temps.group(1 + (3 * i)), int(temps.group(2 + (3 * i)))))
-    #print(v)
-print(AttackBonus("Allows 2 consecutive hits"))
-"""
-cv = re.match(r"(.+) only", d)
-if cv:
-    cv = map(lambda x: eval(x), cv.group(1).split("/"))
-    print(list(cv))
-"""
+    # print(v)
+    print(AttackBonus("Allows 2 consecutive hits"))
 
+    cv = re.match(r"(.+) only", d)
+    if cv:
+        cv = map(lambda x: eval(x), cv.group(1).split("/"))
+        print(list(cv))

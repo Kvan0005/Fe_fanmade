@@ -51,7 +51,7 @@ class ClassSpecificity(NoValue):
     BALLISTIC = "Can use ballistae"  # for archer/sniper class
 
 
-# type of status effect
+# -------------------------------------type of weapons effect ------------------------------------------------
 class StatusEffect(NoValue):
     POISONED = "poisoned"
     SLEEPING = "sleeping"
@@ -92,5 +92,5 @@ class Terrain(NoValue):
 INVENTORY_SIZE = 6  # set the inventory size here
 
 
-def PERCENT():
-    return random.randint(0, 100)
+def PERCENT(percentage: int) -> bool:
+    return percentage > random.randint(0, 100)

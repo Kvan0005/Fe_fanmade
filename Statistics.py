@@ -5,7 +5,7 @@ from Weapon import Weapon
 
 
 @dataclass(frozen=True, match_args=True)
-class Statistics:  # j'ai mis un _ a la fin pour les attributes que considère privé et juste 'hp' qui pourra etre changer a exterior
+class Statistics:
     lv_: int
     m_hp_: int
     hp: int = field(init=False)
@@ -21,11 +21,17 @@ class Statistics:  # j'ai mis un _ a la fin pour les attributes que considère p
     def __post_init__(self):
         object.__setattr__(self, 'hp', self.m_hp_)
 
-    def att_spd(self, main_weapons: Weapon):
+    def att_spd(self, main_weapons: Weapon) -> int:
         if main_weapons is None:
             return 0
         wp_mass = main_weapons.wt_ - self.con_  # main_weapons est aussi dataclass comme celui-ci
         return self.spd_ - (wp_mass if wp_mass > 0 else 0)
+
+    def alive(self) -> bool:
+        return self.hp > 0
+
+    def take_damage(self, damage: int) -> None:
+        self.hp -= damage
 
 
 def main():
