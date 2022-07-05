@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from const import *
 
 
-@dataclass(match_args=True)
+@dataclass(kw_only=True)
 class WeaponAttrsEffect:
     inflict_status_effect: StatusEffect or None
     healer_bonus_effect: HealerEffect or None

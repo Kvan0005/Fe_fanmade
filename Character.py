@@ -115,6 +115,7 @@ class Character(metaclass=abc.ABCMeta):
         """
         deff = self.stat_.def_
         # connect to terrain stat >?
+        # support bonus
         return deff
 
     def battle_accuracy(self, other: "Character") -> int:

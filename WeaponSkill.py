@@ -2,7 +2,7 @@ from const import *
 from dataclasses import dataclass, field
 
 
-@dataclass(match_args=True)
+@dataclass(kw_only=True)
 class WeaponSkill:
     sword_: int = field(default=0)
     lance_: int = field(default=0)
@@ -51,8 +51,8 @@ def temp_main():
     print(my_skill)
 
 
-"""
-utiliser cette idée
+
+
 b = {'x':42, 'y':None}
 function(1, **b) # equal to function(1, x=42, y=None)
-"""
+

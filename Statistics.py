@@ -4,7 +4,7 @@ from pprint import pprint
 from Weapon import Weapon
 
 
-@dataclass(frozen=True, match_args=True)
+@dataclass(kw_only=False, frozen=True)
 class Statistics:
     lv_: int
     m_hp_: int
@@ -16,7 +16,7 @@ class Statistics:
     def_: int
     res_: int
     con_: int
-    mov_: int
+    mov_: int  # self.mov_ = mov_
 
     def __post_init__(self):
         object.__setattr__(self, 'hp', self.m_hp_)
@@ -30,12 +30,16 @@ class Statistics:
     def alive(self) -> bool:
         return self.hp > 0
 
-    def take_damage(self, damage: int) -> None:
-        self.hp -= damage
+    #def take_damage(self, damage: int) -> None:
+    #    self.hp -= damage
 
+    #def increase_stat(self):
+    #    self
 
 def main():
     my = Statistics(1, 16, 4, 7, 9, 5, 2, 0, 5, 5)
+    print(my)
+    #my.take_damage(5)
     print(my)
     pprint(inspect.getmembers(Statistics, inspect.isfunction))
 

@@ -70,7 +70,7 @@ class Weapon(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def _weapon_triangle(self, other: "Weapon") -> int:
-        return 0
+        pass
 
     def weapon_triangle(self, other: "Weapon") -> int:
         assert not isinstance(other, Item)
@@ -131,16 +131,14 @@ class Staff(Weapon):
 
 
 if __name__ == "__main__":
-    a = Sword("SlimSword", "E", 1, 2, 3, 100, 5, 30, 480, 1, "-")
-    b = Lance("SlimSword", "D", 1, 2, 3, 100, 5, 30, 480, 1, "-")
-    c = Axe("SlimSword", "Prf", 1, 2, 3, 100, 5, 30, 480, 1, "-")
-    d = "Res +14"
+    #a = Sword("SlimSword", "E", 1, 2, 3, 100, 5, 30, 480, 1, "-")
+    #b = Lance("SlimSword", "D", 1, 2, 3, 100, 5, 30, 480, 1, "-")
+    #c = Axe("SlimSword", "Prf", 1, 2, 3, 100, 5, 30, 480, 1, "-")
+    d = "Max HP +17, Str +5, Skl +4, Spd +9, Def +4, Res +14"
     # for i in range(len(temps.group()) // 3):
     #    v.append((temps.group(1 + (3 * i)), int(temps.group(2 + (3 * i)))))
     # print(v)
-    print(AttackBonus("Allows 2 consecutive hits"))
-
-    cv = re.match(r"(.+) only", d)
-    if cv:
-        cv = map(lambda x: eval(x), cv.group(1).split("/"))
-        print(list(cv))
+    #print(AttackBonus("Allows 2 consecutive hits"))
+    print("test")
+    cv = re.findall(r"(\w+) [+](\d*)", d)
+    print(cv)
